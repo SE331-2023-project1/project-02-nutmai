@@ -1,0 +1,15 @@
+<script setup lang="ts">
+import { RouterLink, RouterView } from "vue-router";
+</script>
+
+<template>
+  <header>
+    <nav class="flex fixed top-0 left-0 right-0 justify-center text-2xl py-2">
+      <RouterLink :to="{name: 'student-list', query:{page:1}}" class="hover:bg-rose-200 px-3 py-1">Student List</RouterLink>
+      <RouterLink to="/about" class="hover:bg-rose-200 px-3 py-1">Admin</RouterLink>
+    </nav>
+  </header>
+  <div class="flex min-h-[100vh] items-center justify-center py-20">
+    <RouterView />
+  </div>
+</template>

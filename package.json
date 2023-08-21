@@ -1,0 +1,35 @@
+{
+  "name": "nutmai",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"vite\" \"json-server --watch db.json\"",
+    "build": "run-p type-check build-only",
+    "preview": "vite preview",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.4.15",
+    "axios": "^1.4.0",
+    "nprogress": "^0.2.0",
+    "pinia": "^2.1.6",
+    "postcss": "^8.4.28",
+    "tailwindcss": "^3.3.3",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.4"
+  },
+  "devDependencies": {
+    "@tsconfig/node18": "^18.2.0",
+    "@types/node": "^18.17.5",
+    "@types/nprogress": "^0.2.0",
+    "@vitejs/plugin-vue": "^4.3.1",
+    "@vue/tsconfig": "^0.4.0",
+    "concurrently": "^8.2.0",
+    "json-server": "^0.17.3",
+    "npm-run-all": "^4.1.5",
+    "typescript": "~5.1.6",
+    "vite": "^4.4.9",
+    "vue-tsc": "^1.8.8"
+  }
+}
