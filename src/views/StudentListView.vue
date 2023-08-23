@@ -71,7 +71,7 @@ function handleView(id: string) {
 <template>
   <div class="flex flex-col h-full w-full sm:w-[60%]">
     <div class="grid grid-cols-1 sm:grid-cols-3 grid-rows-none sm:grid-rows-2 gap-y-8 sm:gap-y-0 sm:gap-x-4">
-      <PersonCard v-for="student in students" :key="student.id" :person="(student as PersonModel)" :handle-view="() => handleView(student.id)" />
+      <PersonCard v-for="student in students" :key="student.id" :person="(student as PersonModel)" :handle-view="() => handleView(student.id)" type="student" />
     </div>
     <div class="flex items-center justify-between gap-2 mr-8 mt-4 text-sm sm:text-lg">
       <button

@@ -1,15 +1,13 @@
 <script lang="ts">
 import PersonCard from "@/components/PersonCard.vue";
 import type { StudentModel } from "@/models/studentModel";
-import {useStore} from "@/stores";
+import { useStore } from "@/stores";
 import { getTeacherById } from "@/services/teacherService";
 import type { PersonModel } from "@/models/personModel";
 
 export default {
-  
   async setup() {
-    
-    const {commentStore, studentStore, teacherStore} = useStore();
+    const { commentStore, studentStore, teacherStore } = useStore();
     const student = studentStore.getStudent();
     const teacher = teacherStore.getTeacher();
     const comments = await Promise.all(
@@ -32,18 +30,23 @@ export default {
   components: {
     PersonCard,
   },
-
-
 };
 </script>
 
 <template>
-  <div class="flex h-full w-[60%]">
-    <div class="flex flex-col w-[30%] items-center">
-      <div class="w-full h-1/2">
-        <PersonCard :person="(student as PersonModel)" ></PersonCard>
+  <div class="flex sm:flex-row flex-col h-full sm:w-[60%]">
+    <div class="flex flex-col sm:w-[30%] items-center">
+      <div class="grid grid-cols-2 grid-rows-[10%_90%] h-full sm:flex sm:flex-col sm:h-1/2">
+        <h4 class="sm:w-3/5 text-center sm:text-start self-center font-semibold mb-2">Student</h4>
+        <h4 class="sm:hidden text-center self-center font-semibold mb-2">Advisor</h4>
+        <div class="flex">
+          <PersonCard :person="(student as PersonModel)" type="student" />
+        </div>
+        <div class="flex sm:hidden">
+          <PersonCard :person="(teacher as PersonModel)" type="teacher" />
+        </div>
       </div>
-      <div class="w-3/5 h-1/2">
+      <div class="sm:w-3/5 h-full sm:h-1/2">
         <h4 class="text-[15px] font-semibold">Comment:</h4>
         <div class="flex flex-col space-y-2">
           <div v-for="comment in comments" :key="comment.id" class="flex flex-col space-y-1">
@@ -55,8 +58,47 @@ export default {
           </div>
         </div>
       </div>
-      <div class="flex flex-col w-[70%]">
-
+    </div>
+    <div class="sm:hidden px-8">
+      <table class="min-w-full h-fit bg-white border border-solid border-gray-800">
+          <thead class="bg-gray-800 text-white">
+            <tr>
+              <th class="w-[24%]text-center py-3 uppercase font-semibold text-sm">Course (#)</th>
+              <th class="w-[24%] text-center py-3 uppercase font-semibold text-sm">Course ID</th>
+              <th class="py-3 uppercase font-semibold text-sm w-[52%] text-center">Course Name</th>
+            </tr>
+          </thead>
+          <tbody class="text-gray-700">
+            <tr v-for="course,index in student?.courses" :key="course.id">
+              <td class="text-center py-3 border border-solid border-gray-800">{{ index }}</td>
+              <td class="text-center py-3 border border-solid border-gray-800">{{ course.id }}</td>
+              <td class="py-3 text-center border border-solid border-gray-800"><a class="hover:text-blue-500">{{ course.name }}</a></td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+    <div class="hidden sm:flex flex-col sm:w-[70%]">
+      <div class="flex flex-col sm:w-[38%] h-2/5">
+        <h4 class="w-3/5 self-center font-semibold mb-2">Advisor</h4>
+        <PersonCard :person="(teacher as PersonModel)" type="teacher" />
+      </div>
+      <div class="h-3/5 pl-[56px] mt-8 hidden sm:flex">
+        <table class="min-w-full h-fit bg-white border border-solid border-gray-800">
+          <thead class="bg-gray-800 text-white">
+            <tr>
+              <th class="w-1/6 text-center py-3 uppercase font-semibold text-sm">Course (#)</th>
+              <th class="w-1/6 text-center py-3 uppercase font-semibold text-sm">Course ID</th>
+              <th class="py-3 uppercase font-semibold text-sm w-4/6 text-center">Course Name</th>
+            </tr>
+          </thead>
+          <tbody class="text-gray-700">
+            <tr v-for="course,index in student?.courses" :key="course.id">
+              <td class="text-center py-3 border border-solid border-gray-800">{{ index }}</td>
+              <td class="text-center py-3 border border-solid border-gray-800">{{ course.id }}</td>
+              <td class="py-3 text-center border border-solid border-gray-800"><a class="hover:text-blue-500">{{ course.name }}</a></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

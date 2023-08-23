@@ -7,6 +7,7 @@ import { type PropType } from "vue";
 const props = defineProps({
   person: Object as PropType<PersonModel>,
   handleView: Function as PropType<() => void>,
+  type: String as PropType<"student" | "teacher">,
 });
 
 </script>
@@ -18,10 +19,15 @@ const props = defineProps({
     </div>
     <div class="flex justify-start flex-col text-xs sm:text-sm w-3/5 mt-2">
       <div class="flex gap-2">
-        <span class="font-bold">Name:</span><span>{{ person?.name }} {{ person?.surname }}</span>
+        <span class="font-bold" v-if="type === 'student'">Name:</span>
+        <span class="font-bold" v-if="type === 'teacher'">{{ person?.title }}</span>
+        <span>{{ person?.name }} {{ person?.surname }}</span>
       </div>
-      <div class="flex gap-2">
-        <span class="font-bold">Identifier:</span><span>{{ person?.id }}</span>
+      <div class="flex gap-2" v-if="type === 'student'">
+        <span class="font-bold">Student ID:</span><span>{{ person?.id }}</span>
+      </div>
+      <div class="flex gap-2" v-if="type === 'teacher'">
+        <span class="font-bold">Teacher ID:</span><span>{{ person?.id }}</span>
       </div>
       <div class="flex gap-2">
         <span class="font-bold">Register to:</span><span>{{ person?.courses.length }} courses</span>
