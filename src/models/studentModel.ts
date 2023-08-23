@@ -1,10 +1,6 @@
 import type { CourseModel } from "./courseModel";
+import type { PersonModel } from "./personModel";
 
-export interface StudentModel{
-  id: string;
-  name: string;
-  surname: string;
-  img: string;
-  courses: CourseModel[]
+export interface StudentModel extends PersonModel{
   advisorID: string;
 }

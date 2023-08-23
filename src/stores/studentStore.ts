@@ -1,17 +1,17 @@
+import type { CommentModel } from "@/models/commentModel";
 import type { StudentModel } from "@/models/studentModel";
 import { defineStore } from "pinia";
 
-export const useStudentStore = defineStore('student', {
+export const useStudentStore = defineStore("student", {
   state: () => ({
-    studentList: [] as StudentModel[],
-    student: null as StudentModel | null
+    student: null as StudentModel | null,
   }),
   actions: {
-    setStudentList(studentList: StudentModel[]){
-      this.studentList = studentList;
+    setStudent(student: StudentModel) {
+      this.student = student;
     },
-    setStudent(student: StudentModel){
-      this.student = student
-    }
-  }
-})
+    getStudent() {
+      return this.student;
+    },
+  },
+});
