@@ -30,7 +30,9 @@ const props = defineProps({
         <span class="font-bold">Teacher ID:</span><span>{{ person?.id }}</span>
       </div>
       <div class="flex gap-2">
-        <span class="font-bold">Register to:</span><span>{{ person?.courses.length }} courses</span>
+        <span class="font-bold" v-if="type === 'student'">Register to:</span>
+        <span class="font-bold" v-if="type === 'teacher'">Teaching in:</span>
+        <span>{{ person?.courses.length }} courses</span>
       </div>
     </div>
   </div>
