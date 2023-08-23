@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "concurrently \"vite\" \"json-server --watch db.json\"",
+    "json-server": "json-server --watch db.json",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "build-only": "vite build",
