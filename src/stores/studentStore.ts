@@ -10,8 +10,10 @@ export const useStudentStore = defineStore("student", {
     setStudent(student: StudentModel) {
       this.student = student;
     },
-    getStudent() {
-      return this.student;
-    },
+  },
+  getters: {
+    getStudent: (state) => {
+      return state.student;
+    }
   },
 });

@@ -1,4 +1,5 @@
 import type { CommentModel } from "@/models/commentModel";
+import { getTeacherById } from "@/services/teacherService";
 import { defineStore } from "pinia";
 
 export const useCommentStore = defineStore("comment", {
@@ -9,10 +10,10 @@ export const useCommentStore = defineStore("comment", {
     addComment(comment: CommentModel) {
       this.comments.push(comment);
     },
-    getComments(studentID?: string) {
-      if (!studentID) return [] as CommentModel[];
-      this.comments = this.comments.filter((comment) => comment.studentID === studentID);
-      return this.comments;
+  },
+  getters: {
+    getCommentsByStudentId: (state) => {
+      return (studentId: string) => state.comments.filter((comment) => comment.studentID === studentId);
     },
   },
 });

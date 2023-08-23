@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import StudentListView from "../views/StudentListView.vue";
 import StudentDetailView from "../views/StudentDetailView.vue";
+import TeacherListView from "../views/TeacherListView.vue";
 import { useStudentStore } from "@/stores/studentStore";
 import { getStudentById, getStudentsService } from "@/services/studentService";
 import nProgress from "nprogress";
@@ -30,7 +31,6 @@ const router = createRouter({
         try{
           const student = await getStudentById(id)
           studentStore.setStudent(student);
-          console.log(student)
           const teacher = await getTeacherById(student.advisorID);
           teacherStore.setTeacher(teacher);
         }catch(err:any){
@@ -44,6 +44,14 @@ const router = createRouter({
           }
         }
       },
+    },
+    {
+      path: "/",
+      name: "teacher-list",
+      component: TeacherListView,
+      props: (route) => ({
+        page: parseInt((route.query?.page as string) || "1"),
+      }),
     },
   ],
   scrollBehavior(to, from, savedPosition) {

@@ -1,7 +1,9 @@
+import type { TeacherModel } from "./teacherModel";
+
 export interface CommentModel{
   id: string;
   studentID: string;
-  teacherID: string;
+  teacher: TeacherModel
   content: string;
-  date: string;
+  date: Date;
 }

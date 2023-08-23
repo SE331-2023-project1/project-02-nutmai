@@ -9,8 +9,5 @@ export const useTeacherStore = defineStore("teacher", {
     setTeacher(teacher: TeacherModel) {
       this.teacher = teacher;
     },
-    getTeacher() {
-      return this.teacher;
-    },
   },
 });
