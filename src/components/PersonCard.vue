@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import type { PersonModel } from "@/models/personModel";
-import { type StudentModel } from "@/models/studentModel";
+import type { UserModel, StudentModel, TeacherModel } from "@/models/schoolModel";
 import router from "@/router";
 import { type PropType } from "vue";
 
 const props = defineProps({
-  person: Object as PropType<PersonModel>,
+  person: Object as PropType<StudentModel | TeacherModel>,
   handleView: Function as PropType<() => void>,
   type: String as PropType<"student" | "teacher">,
 });
@@ -14,7 +13,7 @@ const props = defineProps({
 
 <template>
   <div class="w-full h-full flex flex-col items-center" >
-    <div class="flex justify-center h-3/4 w-3/5" v-on:click="handleView">
+    <div class="flex justify-center h-3/4 w-3/5 cursor-pointer" v-on:click="handleView">
       <img :src="person?.img" alt="" class="w-full h-full object-cover"/>
     </div>
     <div class="flex justify-start flex-col text-xs sm:text-sm w-3/5 mt-2">

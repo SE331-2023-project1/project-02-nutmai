@@ -4,10 +4,10 @@ import type { PropType } from "vue";
 import { ref } from "vue";
 import { useStore } from "@/stores";
 import { getTeachersService } from "@/services/teacherService";
-import type { TeacherModel } from "@/models/teacherModel";
 import { v4 as uuidv4 } from "uuid";
+import type { StudentModel, TeacherModel } from "@/models/schoolModel";
 defineProps<{
-  studentID: string;
+  student: StudentModel;
 }>();
 
 function handleAddComment(comment: CommentModel) {
@@ -40,10 +40,10 @@ const teacherID = ref(teachers[0].id);
           () =>
             handleAddComment({
               id: uuidv4(),
-              studentID: studentID,
-              teacher: teachers.find((t) => t.id === teacherID) as TeacherModel,
-              content: comment,
-              date: new Date(),
+              text: comment,
+              student: student,
+              createdAt: new Date(),
+              createdBy: teachers.find((t) => t.id === teacherID) as TeacherModel,
             })
         "
       >

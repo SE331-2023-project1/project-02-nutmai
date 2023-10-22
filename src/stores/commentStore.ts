@@ -13,7 +13,7 @@ export const useCommentStore = defineStore("comment", {
   },
   getters: {
     getCommentsByStudentId: (state) => {
-      return (studentId: string) => state.comments.filter((comment) => comment.studentID === studentId);
+      return (studentId: string) => state.comments.filter((comment) => comment.student.id === studentId);
     },
   },
 });

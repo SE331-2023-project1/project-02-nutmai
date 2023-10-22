@@ -1,92 +1,177 @@
 <script setup lang="ts">
 import PersonCard from "@/components/PersonCard.vue";
-import type { StudentModel } from "@/models/studentModel";
 import { useStore } from "@/stores";
 import { getTeacherById } from "@/services/teacherService";
-import type { PersonModel } from "@/models/personModel";
 import CommentFormVue from "@/components/CommentForm.vue";
+import ModalVue from "@/components/Modal.vue";
 import { storeToRefs } from "pinia";
+import { type StudentModel, type UserModel, type TeacherModel } from "@/models/schoolModel";
+import { ref } from "vue";
 
 const { commentStore, studentStore, teacherStore } = useStore();
 const student = storeToRefs(studentStore).getStudent;
 const teacher = storeToRefs(teacherStore).teacher;
 const comments = storeToRefs(commentStore).comments;
+
+const showAdvisorModal = ref(false);
+const showCommentsModal = ref(false);
 </script>
 
 <template>
-  <div class="flex sm:flex-row flex-col h-full sm:w-[60%]">
-    <div class="flex flex-col sm:w-[30%] items-center">
-      <div class="grid grid-cols-2 grid-rows-[10%_90%] h-full sm:flex sm:flex-col sm:h-1/2">
-        <h4 class="sm:w-3/5 text-center sm:text-start self-center font-semibold mb-2">Student</h4>
-        <h4 class="sm:hidden text-center self-center font-semibold mb-2">Advisor</h4>
-        <div class="flex">
-          <PersonCard :person="(student as PersonModel)" type="student" />
-        </div>
-        <div class="flex sm:hidden">
-          <PersonCard :person="(teacher as PersonModel)" type="teacher" />
-        </div>
+  <div class="w-[50%] flex flex-col">
+    <header class="w-full flex h-2/5 gap-4">
+      <div class="w-[25%] h-full overflow-hidden border border-black">
+        <img :src="student?.img" class="w-full h-full object-cover" />
       </div>
-      <div class="sm:w-3/5 h-full sm:h-1/2">
-        <h4 class="text-[15px] font-semibold">Comment:</h4>
-        <div class="flex flex-col space-y-2">
-          <div v-if="student" v-for="comment in comments" :key="comment.id" class="flex flex-col">
-            <div class="flex flex-col px-1 border-solid border border-gray-800 relative">
-              <span class="text-[12px] font-semibold whitespace-nowrap"
-                >{{ comment.teacher.title }} {{ comment.teacher.name }} {{ comment.teacher.surname }}</span
-              >
-              <span class="text-[12px] font-semibold">{{ comment.date.toLocaleDateString() }}</span>
-            </div>
-            <span class="text-[12px] px-1 py-1 border-solid border border-gray-800 w-full">{{ comment.content }}</span>
-          </div>
+      <div class="w-[75%] h-full flex flex-col">
+        <div class="flex gap-2">
+          <h1 class="text-lg font-bold">Student ID:</h1>
+          <h2 class="text-lg">{{ student?.id }}</h2>
         </div>
+        <div class="flex gap-2">
+          <h1 class="text-lg font-bold">Name:</h1>
+          <h2 class="text-lg">{{ student?.title }} {{ student?.name }} {{ student?.surname }}</h2>
+        </div>
+        <div class="flex gap-2">
+          <h1 class="text-lg font-bold">Department:</h1>
+          <h2 class="text-lg">{{ student?.department }}</h2>
+        </div>
+        <div class="flex gap-2">
+          <h1 class="text-lg font-bold">Advisor:</h1>
+          <h2 class="text-lg">
+            <button class="text-blue-600 underline" v-on:click="showAdvisorModal = true">View</button>
+          </h2>
+        </div>
+        <div class="flex gap-2">
+          <h1 class="text-lg font-bold">Comments:</h1>
+          <h2 class="text-lg">
+            <button class="text-blue-600 underline" v-on:click="showCommentsModal = true">View</button>
+          </h2>
+        </div>
+        <CommentFormVue :student="(student as StudentModel)" />
       </div>
-    </div>
-    <div class="sm:hidden px-8">
-      <table class="min-w-full h-fit bg-white border border-solid border-gray-800">
-        <thead class="bg-gray-800 text-white">
+    </header>
+    <section class="mt-4 flex flex-col gap-2">
+      <h1 class="text-2xl font-bold">Courses</h1>
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead>
           <tr>
-            <th class="w-[24%]text-center py-3 uppercase font-semibold text-sm">Course (#)</th>
-            <th class="w-[24%] text-center py-3 uppercase font-semibold text-sm">Course ID</th>
-            <th class="py-3 uppercase font-semibold text-sm w-[52%] text-center">Course Name</th>
+            <th
+              class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider border border-black"
+            >
+              Course No.
+            </th>
+            <th
+              class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider border border-black"
+            >
+              Course Name
+            </th>
+            <th
+              class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider border border-black"
+            >
+              Instructor
+            </th>
           </tr>
         </thead>
-        <tbody class="text-gray-700">
-          <tr v-for="(course, index) in student?.courses" :key="course.id">
-            <td class="text-center py-3 border border-solid border-gray-800">{{ index }}</td>
-            <td class="text-center py-3 border border-solid border-gray-800">{{ course.id }}</td>
-            <td class="py-3 text-center border border-solid border-gray-800">
-              <a class="hover:text-blue-500">{{ course.name }}</a>
+        <tbody>
+          <tr v-for="(course, index) in student?.courses" :key="index">
+            <td class="px-6 py-4 whitespace-no-wrap border border-gray-300">
+              {{ course?.id }}
+            </td>
+            <td class="px-6 py-4 whitespace-no-wrap border border-gray-300">
+              {{ course?.name }}
+            </td>
+            <td class="px-6 py-4 whitespace-no-wrap border border-gray-300">
+              {{ course.teacher?.title }} {{ course.teacher?.name }} {{ course.teacher?.surname }}
             </td>
           </tr>
         </tbody>
       </table>
-    </div>
-    <CommentFormVue :studentID="student.id" v-if="student" />
-    <div class="hidden sm:flex flex-col sm:w-[70%]">
-      <div class="flex flex-col sm:w-[38%] h-2/5">
-        <h4 class="w-3/5 self-center font-semibold mb-2">Advisor</h4>
-        <PersonCard :person="(teacher as PersonModel)" type="teacher" />
+    </section>
+  </div>
+
+  <ModalVue :show="showAdvisorModal" @close="showAdvisorModal = false">
+    <div class="flex space-x-4">
+      <div class="w-[40%]">
+        <img :src="teacher?.img" class="w-full" />
       </div>
-      <div class="h-3/5 pl-[56px] mt-8 hidden sm:flex">
-        <table class="min-w-full h-fit bg-white border border-solid border-gray-800">
-          <thead class="bg-gray-800 text-white">
+      <div class="w-[60%]">
+        <div class="flex flex-col space-y-1">
+          <div class="flex gap-2">
+            <h1 class="text-lg font-bold">Name:</h1>
+            <h2 class="text-lg">{{ teacher?.title }} {{ teacher?.name }} {{ teacher?.surname }}</h2>
+          </div>
+          <div class="flex gap-2">
+            <h1 class="text-lg font-bold">Department:</h1>
+            <h2 class="text-lg">{{ teacher?.department }}</h2>
+          </div>
+          <div class="flex gap-2">
+            <h1 class="text-lg font-bold">Academic Position:</h1>
+            <h2 class="text-lg">{{ teacher?.academicPosition }}</h2>
+          </div>
+        </div>
+        <table class="min-w-full divide-y divide-gray-200 mt-4">
+          <thead>
             <tr>
-              <th class="w-1/6 text-center py-3 uppercase font-semibold text-sm">Course (#)</th>
-              <th class="w-1/6 text-center py-3 uppercase font-semibold text-sm">Course ID</th>
-              <th class="py-3 uppercase font-semibold text-sm w-4/6 text-center">Course Name</th>
+              <th
+                class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider border border-black"
+              >
+                Course No.
+              </th>
+              <th
+                class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider border border-black"
+              >
+                Course Name
+              </th>
+              <th
+                class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider border border-black"
+              >
+                Instructor
+              </th>
             </tr>
           </thead>
-          <tbody class="text-gray-700">
-            <tr v-for="(course, index) in student?.courses" :key="course.id">
-              <td class="text-center py-3 border border-solid border-gray-800">{{ index }}</td>
-              <td class="text-center py-3 border border-solid border-gray-800">{{ course.id }}</td>
-              <td class="py-3 text-center border border-solid border-gray-800">
-                <a class="hover:text-blue-500">{{ course.name }}</a>
+          <tbody>
+            <tr v-for="(course, index) in teacher?.courses" :key="index">
+              <td class="px-6 py-4 whitespace-no-wrap border border-gray-300">
+                {{ course?.id }}
+              </td>
+              <td class="px-6 py-4 whitespace-no-wrap border border-gray-300">
+                {{ course?.name }}
+              </td>
+              <td class="px-6 py-4 whitespace-no-wrap border border-gray-300">
+                {{ course.teacher?.title }} {{ course.teacher?.name }} {{ course.teacher?.surname }}
               </td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
-  </div>
+  </ModalVue>
+
+  <ModalVue :show="showCommentsModal" @close="showCommentsModal = false">
+    <div class="flex flex-col items-center space-y-2">
+      <h1 class="text-lg font-bold">Comments</h1>
+      <ul>
+        <li v-for="(comment, index) in comments" :key="index" class="mt-4 first-of-type:mt-0">
+          <div class="flex flex-col space-y-1 border border-black px-4 py-4">
+            <div class="flex gap-2">
+              <h2 class="text-lg font-bold">Comment:</h2>
+              <h2 class="text-lg">{{ comment.text }}</h2>
+            </div>
+            <div class="flex gap-2">
+              <h2 class="text-lg font-bold">Author:</h2>
+              <h2 class="text-lg">
+                {{ comment.createdBy.title }} {{ comment.createdBy.name }} {{ comment.createdBy.surname }}
+              </h2>
+            </div>
+            <div class="flex gap-2">
+              <h2 class="text-lg font-bold">Date:</h2>
+              <h2 class="text-lg">{{ comment.createdAt.toLocaleDateString() }}</h2>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div v-if="comments.length === 0" class="text-lg">This student currently has no comments yet.</div>
+    </div>
+  </ModalVue>
 </template>

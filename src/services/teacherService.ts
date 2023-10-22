@@ -1,4 +1,4 @@
-import { type TeacherModel } from "@/models/teacherModel";
+import type { TeacherModel } from "@/models/schoolModel";
 import axiosClient from "@/utils/axiosClient";
 
 export async function getTeachersService(perPage?: number, page?: number) {

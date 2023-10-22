@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:latest
+    container_name: my-mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: nutmai
+      MYSQL_USER: nutmai
+      MYSQL_PASSWORD: 1234
+    ports:
+      - "3312:3306"
+    networks:
+      - my-network
+
+  # Spring Boot Application
+  spring-app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: spring-app-container
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/nutmai
+      SPRING_DATASOURCE_USERNAME: nutmai
+      SPRING_DATASOURCE_PASSWORD: nutmai
+    networks:
+      - my-network
+
+  # Vue.js 3 Frontend
+  vue-app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: vue-app-container
+    ports:
+      - "5175:5173"
+    networks:
+      - my-network
+
+networks:
+  my-network:

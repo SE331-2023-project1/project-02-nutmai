@@ -3,10 +3,9 @@ import PersonCard from "@/components/PersonCard.vue";
 import nProgress from "nprogress";
 import { computed, ref, type Ref } from "vue";
 import { getStudentsService } from "@/services/studentService";
-import type { StudentModel } from "@/models/studentModel";
 import router from "@/router";
 import { onBeforeRouteUpdate } from "vue-router";
-import type { PersonModel } from "@/models/personModel";
+import type { StudentModel } from "@/models/schoolModel";
 
 const students: Ref<Array<StudentModel>> = ref([]);
 
@@ -20,7 +19,6 @@ const props = defineProps({
 const totalStudents = ref<number>(0);
 const perPage = ref<number>(6);
 const hasNextPage = computed(() => {
-  //first calculate the total page
   const totalPages = Math.ceil(totalStudents.value / perPage.value);
   return props.page.valueOf() < totalPages;
 });
@@ -54,12 +52,12 @@ onBeforeRouteUpdate((to, from, next) => {
 });
 
 function handlePrevPage() {
-  if(props.page === 1) return;
+  if (props.page === 1) return;
   router.push({ name: "student-list", query: { page: props.page - 1 } });
 }
 
 function handleNextPage() {
-  if(!hasNextPage.value) return;
+  if (!hasNextPage.value) return;
   router.push({ name: "student-list", query: { page: props.page + 1 } });
 }
 
@@ -71,7 +69,13 @@ function handleView(id: string) {
 <template>
   <div class="flex flex-col h-full w-full sm:w-[60%]">
     <div class="grid grid-cols-1 sm:grid-cols-3 grid-rows-none sm:grid-rows-2 gap-y-8 sm:gap-y-0 sm:gap-x-4">
-      <PersonCard v-for="student in students" :key="student.id" :person="(student as PersonModel)" :handle-view="() => handleView(student.id)" type="student" />
+      <PersonCard
+        v-for="student in students"
+        :key="student.id"
+        :person="(student as StudentModel)"
+        :handle-view="() => handleView(student.id)"
+        type="student"
+      />
     </div>
     <div class="flex items-center justify-between gap-2 mt-12 text-sm sm:text-lg">
       <button

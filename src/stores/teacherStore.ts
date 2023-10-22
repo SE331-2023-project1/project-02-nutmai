@@ -1,4 +1,4 @@
-import type { TeacherModel } from "@/models/teacherModel";
+import type { TeacherModel } from "@/models/schoolModel";
 import { defineStore } from "pinia";
 
 export const useTeacherStore = defineStore("teacher", {

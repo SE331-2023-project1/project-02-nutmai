@@ -1,9 +1,9 @@
-import type { TeacherModel } from "./teacherModel";
+import type { UserModel, StudentModel } from "./schoolModel";
 
-export interface CommentModel{
+export interface CommentModel {
   id: string;
-  studentID: string;
-  teacher: TeacherModel
-  content: string;
-  date: Date;
+  text: string;
+  student: StudentModel;
+  createdAt: Date;
+  createdBy: UserModel;
 }

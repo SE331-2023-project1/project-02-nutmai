@@ -2,13 +2,10 @@
 import PersonCard from "@/components/PersonCard.vue";
 import nProgress from "nprogress";
 import { computed, ref, type Ref } from "vue";
-import { getStudentsService } from "@/services/studentService";
-import type { StudentModel } from "@/models/studentModel";
 import router from "@/router";
 import { onBeforeRouteUpdate } from "vue-router";
-import type { PersonModel } from "@/models/personModel";
-import type { TeacherModel } from "@/models/teacherModel";
 import { getTeachersService } from "@/services/teacherService";
+import type { TeacherModel } from "@/models/schoolModel";
 
 const teachers: Ref<Array<TeacherModel>> = ref([]);
 
@@ -73,7 +70,7 @@ function handleView(id: string) {
 <template>
   <div class="flex flex-col h-full w-full sm:w-[60%]">
     <div class="grid grid-cols-1 sm:grid-cols-3 grid-rows-none sm:grid-rows-2 gap-y-8 sm:gap-y-0 sm:gap-x-4">
-      <PersonCard v-for="teacher in teachers" :key="teacher.id" :person="(teacher as PersonModel)" :handle-view="() => handleView(teacher.id)" type="teacher" />
+      <PersonCard v-for="teacher in teachers" :key="teacher.id" :person="(teacher as TeacherModel)" :handle-view="() => handleView(teacher.id)" type="teacher" />
     </div>
     <div class="flex items-center justify-between gap-2 mt-12 text-sm sm:text-lg">
       <button
@@ -103,3 +100,4 @@ function handleView(id: string) {
     </div>
   </div>
 </template>
+@/models/schoolModel

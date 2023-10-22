@@ -9,7 +9,7 @@ import { RouterLink, RouterView } from "vue-router";
       <RouterLink :to="{name: 'teacher-list', query:{page:1}}" class="hover:bg-rose-200 px-3 py-1">Teacher List</RouterLink>
     </nav>
   </header>
-  <div class="flex h-[100vh] items-center justify-center py-20">
+  <div class="flex h-[100vh] justify-center py-32 lg:px-20">
     <Suspense>
       <RouterView />
     </Suspense>
