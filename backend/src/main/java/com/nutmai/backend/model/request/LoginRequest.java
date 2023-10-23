@@ -1,4 +1,4 @@
-package com.nutmai.backend.auth;
+package com.nutmai.backend.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationResponse {
-  private String token;
+public class LoginRequest {
+  private String username;
+  private String password;
 }

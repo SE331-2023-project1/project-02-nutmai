@@ -5,19 +5,25 @@ import { getTeacherById } from "@/services/teacherService";
 import CommentFormVue from "@/components/CommentForm.vue";
 import ModalVue from "@/components/Modal.vue";
 import { storeToRefs } from "pinia";
-import { type StudentModel, type UserModel, type TeacherModel } from "@/models/schoolModel";
+import { type UserModel } from "@/models/userModel";
 import { ref } from "vue";
+import Navbar from "@/components/Navbar.vue";
 
-const { commentStore, studentStore, teacherStore } = useStore();
+const { commentStore, studentStore, teacherStore, userStore } = useStore();
 const student = storeToRefs(studentStore).getStudent;
 const teacher = storeToRefs(teacherStore).teacher;
 const comments = storeToRefs(commentStore).comments;
+
+console.log(student.value)
+
+const currentUser = storeToRefs(userStore).getCurrentUser;
 
 const showAdvisorModal = ref(false);
 const showCommentsModal = ref(false);
 </script>
 
 <template>
+  <Navbar/>
   <div class="w-[50%] flex flex-col">
     <header class="w-full flex h-2/5 gap-4">
       <div class="w-[25%] h-full overflow-hidden border border-black">
@@ -48,7 +54,7 @@ const showCommentsModal = ref(false);
             <button class="text-blue-600 underline" v-on:click="showCommentsModal = true">View</button>
           </h2>
         </div>
-        <CommentFormVue :student="(student as StudentModel)" />
+        <CommentFormVue :student="(student as UserModel)" v-if="currentUser.role === 'TEACHER' || currentUser.role === 'ADMIN'" />
       </div>
     </header>
     <section class="mt-4 flex flex-col gap-2">
@@ -74,7 +80,7 @@ const showCommentsModal = ref(false);
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(course, index) in student?.courses" :key="index">
+          <tr v-for="(course, index) in student?.studyCourses" :key="index">
             <td class="px-6 py-4 whitespace-no-wrap border border-gray-300">
               {{ course?.id }}
             </td>
@@ -131,7 +137,7 @@ const showCommentsModal = ref(false);
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(course, index) in teacher?.courses" :key="index">
+            <tr v-for="(course, index) in teacher?.teachCourses" :key="index">
               <td class="px-6 py-4 whitespace-no-wrap border border-gray-300">
                 {{ course?.id }}
               </td>

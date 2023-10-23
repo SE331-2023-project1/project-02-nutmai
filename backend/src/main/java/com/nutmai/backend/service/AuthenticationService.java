@@ -1,4 +1,4 @@
-package com.nutmai.backend.auth;
+package com.nutmai.backend.service;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.nutmai.backend.config.JwtService;
 import com.nutmai.backend.model.User;
+import com.nutmai.backend.model.request.LoginRequest;
+import com.nutmai.backend.model.request.RegisterRequest;
+import com.nutmai.backend.model.response.AuthenticationResponse;
 import com.nutmai.backend.repository.CourseRepository;
 import com.nutmai.backend.repository.UserRepository;
 
@@ -39,6 +42,14 @@ public class AuthenticationService {
     userRepository.save(user);
     var jwtToken = jwtService.generateToken(user);
     return AuthenticationResponse.builder()
+      .id(user.getId())
+      .username(user.getUsername())
+      .name(user.getName())
+      .surname(user.getSurname())
+      .img(user.getImg())
+      .role(user.getRole().toString())
+      .department(user.getDepartment())
+      .academicPosition(user.getAcademicPosition())
       .token(jwtToken)
       .build();
   }
@@ -50,6 +61,14 @@ public class AuthenticationService {
     var user = userRepository.findByUsername(request.getUsername()).orElseThrow();
     var jwtToken = jwtService.generateToken(user);
     return AuthenticationResponse.builder()
+      .id(user.getId())
+      .username(user.getUsername())
+      .name(user.getName())
+      .surname(user.getSurname())
+      .img(user.getImg())
+      .role(user.getRole().toString())
+      .department(user.getDepartment())
+      .academicPosition(user.getAcademicPosition())
       .token(jwtToken)
       .build();
   }

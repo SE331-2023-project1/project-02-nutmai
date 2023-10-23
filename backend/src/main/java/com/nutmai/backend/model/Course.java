@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.util.List;
 
+import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -25,14 +26,15 @@ public class Course {
   @Id
   private String id;
   private String name;
+  @Nullable
   private String description;
   @ManyToOne
   private User teacher;
   @ManyToMany
   @JoinTable(
     name = "student_course",
-    joinColumns = @JoinColumn(name = "course_id"),
-    inverseJoinColumns = @JoinColumn(name = "student_id")
+    joinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id")
   )
   private List<User> students;
 }

@@ -1,5 +1,6 @@
 package com.nutmai.backend.model.request;
 
+import java.util.Date;
 import java.util.List;
 
 import io.micrometer.common.lang.Nullable;
@@ -12,12 +13,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateCourseRequest {
-  private String id;
-  private String name;
+public class CommentRequest {
   @Nullable
-  @Builder.Default
-  private String description = "";
-  private String teacherId;
-  private List<String> studentIds;
+  private String id;
+  private String text;
+  private String userId;
+  private Date createdAt;
+  private String createdById;
+  @Nullable
+  private List<String> replyIds;
 }

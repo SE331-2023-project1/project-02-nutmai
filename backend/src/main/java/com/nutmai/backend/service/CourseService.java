@@ -3,7 +3,7 @@ package com.nutmai.backend.service;
 import org.springframework.stereotype.Service;
 
 import com.nutmai.backend.model.Course;
-import com.nutmai.backend.model.request.CreateCourseRequest;
+import com.nutmai.backend.model.request.CourseRequest;
 import com.nutmai.backend.repository.CourseRepository;
 import com.nutmai.backend.repository.UserRepository;
 
@@ -15,7 +15,7 @@ public class CourseService {
   private final UserRepository userRepository;
   private final CourseRepository courseRepository;
 
-  public void createCourse(CreateCourseRequest request) {
+  public void createCourse(CourseRequest request) {
     var teacher = userRepository.findById(request.getTeacherId()).orElse(null);
     var students = userRepository.findAllById(request.getStudentIds());
 
@@ -29,4 +29,26 @@ public class CourseService {
 
     courseRepository.save(course);
   }
+
+  public void updateCourse(CourseRequest request) {
+    var course = courseRepository.findById(request.getId()).orElse(null);
+    var teacher = userRepository.findById(request.getTeacherId()).orElse(null);
+    var students = userRepository.findAllById(request.getStudentIds());
+
+    course.setName(request.getName());
+    course.setDescription(request.getDescription());
+    course.setTeacher(teacher);
+    course.setStudents(students);
+
+    courseRepository.save(course);
+  }
+
+  public void deleteCourse(String id) {
+    courseRepository.deleteById(id);
+  }
+
+  public Course getCourse(String id) {
+    return courseRepository.findById(id).orElse(null);
+  }
+
 }

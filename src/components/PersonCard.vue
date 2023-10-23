@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { UserModel, StudentModel, TeacherModel } from "@/models/schoolModel";
+import type { UserModel } from "@/models/userModel";
 import router from "@/router";
 import { type PropType } from "vue";
 
 const props = defineProps({
-  person: Object as PropType<StudentModel | TeacherModel>,
+  person: Object as PropType<UserModel>,
   handleView: Function as PropType<() => void>,
   type: String as PropType<"student" | "teacher">,
 });
@@ -31,7 +31,7 @@ const props = defineProps({
       <div class="flex gap-2">
         <span class="font-bold" v-if="type === 'student'">Register to:</span>
         <span class="font-bold" v-if="type === 'teacher'">Teaching in:</span>
-        <span>{{ person?.courses.length }} courses</span>
+        <span>{{ person?.teachCourses?.length }} courses</span>
       </div>
     </div>
   </div>

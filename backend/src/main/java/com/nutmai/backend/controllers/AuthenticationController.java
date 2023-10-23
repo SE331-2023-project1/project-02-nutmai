@@ -1,4 +1,4 @@
-package com.nutmai.backend.auth;
+package com.nutmai.backend.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.nutmai.backend.model.request.LoginRequest;
+import com.nutmai.backend.model.request.RegisterRequest;
+import com.nutmai.backend.model.response.AuthenticationResponse;
+import com.nutmai.backend.service.AuthenticationService;
 
 import lombok.RequiredArgsConstructor;
 

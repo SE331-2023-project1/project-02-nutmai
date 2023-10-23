@@ -5,9 +5,9 @@ import { ref } from "vue";
 import { useStore } from "@/stores";
 import { getTeachersService } from "@/services/teacherService";
 import { v4 as uuidv4 } from "uuid";
-import type { StudentModel, TeacherModel } from "@/models/schoolModel";
+import type { UserModel } from "@/models/userModel";
 defineProps<{
-  student: StudentModel;
+  student: UserModel;
 }>();
 
 function handleAddComment(comment: CommentModel) {
@@ -15,10 +15,10 @@ function handleAddComment(comment: CommentModel) {
   commentStore.addComment(comment);
 }
 
-const teachers = (await getTeachersService()) as TeacherModel[];
+const teachers = await getTeachersService();
 
 const comment = ref("");
-const teacherID = ref(teachers[0].id);
+const teacherID = ref(teachers.data[0].id);
 </script>
 
 <template>
@@ -30,7 +30,7 @@ const teacherID = ref(teachers[0].id);
         v-model="comment"
       ></textarea>
       <select v-model="teacherID" class="border border-gray-300 rounded-md p-2">
-        <option v-for="teacher in teachers" :key="teacher.id" :value="teacher.id">
+        <option v-for="teacher in teachers.data" :key="teacher.id" :value="teacher.id">
           {{ teacher.name }} {{ teacher.surname }}
         </option>
       </select>
@@ -41,9 +41,10 @@ const teacherID = ref(teachers[0].id);
             handleAddComment({
               id: uuidv4(),
               text: comment,
-              student: student,
+              user: student,
               createdAt: new Date(),
-              createdBy: teachers.find((t) => t.id === teacherID) as TeacherModel,
+              createdBy: teachers.data.find((t) => t.id === teacherID) as UserModel,
+              replies: [],
             })
         "
       >
@@ -52,3 +53,4 @@ const teacherID = ref(teachers[0].id);
     </div>
   </div>
 </template>
+@/models/userModel

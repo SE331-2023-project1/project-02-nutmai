@@ -1,9 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
-import StudentListView from "../views/StudentListView.vue";
-import StudentDetailView from "../views/StudentDetailView.vue";
-import TeacherListView from "../views/TeacherListView.vue";
 import { useStudentStore } from "@/stores/studentStore";
-import { getStudentById, getStudentsService } from "@/services/studentService";
+import { getStudentById } from "@/services/studentService";
 import nProgress from "nprogress";
 import { useTeacherStore } from "@/stores/teacherStore";
 import { getTeacherById } from "@/services/teacherService";
@@ -12,9 +9,19 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/",
+      path: '/',
+      name: 'login',
+      component: () => import('@/views/LoginView.vue'),
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('@/views/RegisterView.vue'),
+    },
+    {
+      path: "/student-list",
       name: "student-list",
-      component: StudentListView,
+      component: () => import("@/views/StudentListView.vue"),
       props: (route) => ({
         page: parseInt((route.query?.page as string) || "1"),
       }),
@@ -22,7 +29,7 @@ const router = createRouter({
     {
       path: "/student-detail/:id",
       name: "student-detail",
-      component: StudentDetailView,
+      component: () => import("@/views/StudentDetailView.vue"),
       props: true,
       beforeEnter: async (to) => {
         const id = String(to.params.id);
@@ -31,7 +38,7 @@ const router = createRouter({
         try{
           const student = await getStudentById(id)
           studentStore.setStudent(student);
-          const teacher = await getTeacherById(student.advisorID);
+          const teacher = await getTeacherById(student.advisor?.id || "");
           teacherStore.setTeacher(teacher);
         }catch(err:any){
           if (err.response && err.response.status === 404) {
@@ -46,13 +53,23 @@ const router = createRouter({
       },
     },
     {
-      path: "/",
+      path: "/teacher-list",
       name: "teacher-list",
-      component: TeacherListView,
+      component: () => import("@/views/TeacherListView.vue"),
       props: (route) => ({
         page: parseInt((route.query?.page as string) || "1"),
       }),
     },
+    {
+      path: '/404',
+      name: 'not-found',
+      component: () => import('@/views/NotFoundView.vue'),
+    },
+    {
+      path: '/network-error',
+      name: 'network-error',
+      component: () => import('@/views/NetworkErrorView.vue'),
+    }
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
@@ -64,8 +81,25 @@ const router = createRouter({
   linkActiveClass: "text-rose-500",
 });
 
-router.beforeEach(() => {
+router.beforeEach(async (to, from) => {
   nProgress.start();
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const isAuthenticated = user.token;
+  if(!isAuthenticated){
+    if(to.name !== 'login' && to.name !== 'register'){
+      return {
+        name: 'login'
+      }
+    }
+  }
+  if(isAuthenticated){
+    if(to.name === 'login' || to.name === 'register'){
+      return {
+        name: 'student-list'
+      }
+    }
+  }
+  const isAdmin = user.role === 'admin';
 });
 
 router.afterEach(() => {

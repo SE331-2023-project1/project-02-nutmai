@@ -5,9 +5,10 @@ import { computed, ref, type Ref } from "vue";
 import { getStudentsService } from "@/services/studentService";
 import router from "@/router";
 import { onBeforeRouteUpdate } from "vue-router";
-import type { StudentModel } from "@/models/schoolModel";
+import type { UserModel } from "@/models/userModel";
+import NavbarVue from "@/components/Navbar.vue";
 
-const students: Ref<Array<StudentModel>> = ref([]);
+const students: Ref<Array<UserModel>> = ref([]);
 
 const props = defineProps({
   page: {
@@ -26,12 +27,12 @@ const hasNextPage = computed(() => {
 nProgress.start();
 getStudentsService(perPage.value, props.page)
   //@ts-ignore
-  .then((res: { data: StudentModel[]; total: number }) => {
+  .then(res => {
     students.value = res.data;
-    totalStudents.value = res.total;
+    totalStudents.value = res.totalElements;
   })
   .catch(() => {
-    router.push({ name: "Network Error" });
+    router.push({ name: "network-error" });
   })
   .finally(() => {
     nProgress.done();
@@ -67,12 +68,13 @@ function handleView(id: string) {
 </script>
 
 <template>
+  <NavbarVue/>
   <div class="flex flex-col h-full w-full sm:w-[60%]">
     <div class="grid grid-cols-1 sm:grid-cols-3 grid-rows-none sm:grid-rows-2 gap-y-8 sm:gap-y-0 sm:gap-x-4">
       <PersonCard
         v-for="student in students"
         :key="student.id"
-        :person="(student as StudentModel)"
+        :person="(student as UserModel)"
         :handle-view="() => handleView(student.id)"
         type="student"
       />

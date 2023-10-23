@@ -1,9 +1,11 @@
-import type { UserModel, StudentModel } from "./schoolModel";
+import type { ReplyModel } from "./replyModel";
+import type { UserModel } from "./userModel";
 
 export interface CommentModel {
   id: string;
   text: string;
-  student: StudentModel;
+  user: UserModel;
   createdAt: Date;
   createdBy: UserModel;
+  replies: ReplyModel[];
 }

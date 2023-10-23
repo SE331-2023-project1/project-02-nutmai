@@ -1,13 +1,13 @@
 import type { CommentModel } from "@/models/commentModel";
-import type { StudentModel } from "@/models/schoolModel";
+import type { UserModel } from "@/models/userModel";
 import { defineStore } from "pinia";
 
 export const useStudentStore = defineStore("student", {
   state: () => ({
-    student: null as StudentModel | null,
+    student: null as UserModel | null,
   }),
   actions: {
-    setStudent(student: StudentModel) {
+    setStudent(student: UserModel) {
       this.student = student;
     },
   },

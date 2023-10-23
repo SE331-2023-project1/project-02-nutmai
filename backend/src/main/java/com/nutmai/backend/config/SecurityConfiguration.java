@@ -9,6 +9,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.nutmai.backend.model.Role;
+
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -21,12 +23,12 @@ public class SecurityConfiguration {
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http.csrf().disable()
+    http.csrf().disable().cors().and()
       .authorizeHttpRequests()
-      .requestMatchers("/api/v1/**").permitAll()
-      .requestMatchers("/api/v1/student/**").hasRole("STUDENT")
-      .requestMatchers("/api/v1/teacher/**").hasRole("TEACHER")
-      .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+      .requestMatchers("/api/v1/auth/**").permitAll()
+      .requestMatchers("/api/v1/student/**").hasAnyAuthority(Role.STUDENT.name(), Role.TEACHER.name(), Role.ADMIN.name())
+      .requestMatchers("/api/v1/teacher/**").hasAnyAuthority(Role.TEACHER.name(), Role.ADMIN.name())
+      .requestMatchers("/api/v1/admin/**").hasAuthority(Role.ADMIN.name())
       .anyRequest().authenticated().and()
       .sessionManagement()
       .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()

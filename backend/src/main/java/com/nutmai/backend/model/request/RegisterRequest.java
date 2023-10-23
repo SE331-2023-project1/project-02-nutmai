@@ -1,4 +1,4 @@
-package com.nutmai.backend.auth;
+package com.nutmai.backend.model.request;
 
 import java.util.ArrayList;
 import java.util.List;

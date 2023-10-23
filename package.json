@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"vite\" \"json-server --watch db.json\"",
+    "dev": "vite",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "build-only": "vite build",
@@ -18,7 +18,8 @@
     "tailwindcss": "^3.3.3",
     "uuid": "^9.0.0",
     "vue": "^3.3.4",
-    "vue-router": "^4.2.4"
+    "vue-router": "^4.2.4",
+    "vue-toast-notification": "3.0"
   },
   "devDependencies": {
     "@tsconfig/node18": "^18.2.0",

@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from "vue-router";
+import { createApp } from "vue";
+import { RouterView } from "vue-router";
+import ToastPlugin from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-sugar.css';
+const app = createApp({});
+app.use(ToastPlugin, {position: 'top-right'});
+app.mount('#app');
 </script>
 
 <template>
-  <header>
-    <nav class="flex fixed top-0 left-0 right-0 justify-center text-2xl py-2 bg-white">
-      <RouterLink :to="{name: 'student-list', query:{page:1}}" class="hover:bg-rose-100 px-3 py-1">Student List</RouterLink>|
-      <RouterLink :to="{name: 'teacher-list', query:{page:1}}" class="hover:bg-rose-200 px-3 py-1">Teacher List</RouterLink>
-    </nav>
-  </header>
   <div class="flex h-[100vh] justify-center py-32 lg:px-20">
     <Suspense>
       <RouterView />
