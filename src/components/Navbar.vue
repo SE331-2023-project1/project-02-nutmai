@@ -22,6 +22,9 @@ const logout = () => {
       <RouterLink :to="{ name: 'teacher-list', query: { page: 1 } }" class="hover:bg-rose-200 px-3 py-1"
         >Teacher List</RouterLink
       >|
+      <RouterLink :to="{ name: 'advisee-list', query: { page: 1 } }" class="hover:bg-rose-200 px-3 py-1" v-if="currentUser.role === 'TEACHER'"
+        >My Advisees |</RouterLink
+      >
       <RouterLink :to="{name: 'user-profile'}" class="hover:bg-rose-200 px-3 py-1">Profile</RouterLink>|
       <RouterLink :to="{name: 'admin'}" class="hover:bg-rose-200 px-3 py-1">Admin</RouterLink>|
       <button class="hover:bg-rose-200 px-3 py-1" @click="logout">Logout</button>
