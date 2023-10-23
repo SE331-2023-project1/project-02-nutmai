@@ -4,7 +4,7 @@
       for="profile-upload"
       class="cursor-pointer flex items-center justify-center "
     >
-      <img :src="(previewUrl as string)|| 'https://fakeimg.pl/300x400'" class="w-32 h-32 rounded-full object-cover" />
+      <img :src="(previewUrl as string)" class="w-32 h-32 rounded-full object-cover" />
     </label>
     <input id="profile-upload" type="file" class="hidden" accept="image/*" @change="onFileChange" />
   </div>
@@ -18,7 +18,8 @@ export default {
     file:File,
   },
   setup(props, { emit }) {
-    const previewUrl = ref<string | null>(props.file ? URL.createObjectURL(props.file) : null);
+
+    const previewUrl = ref<string | null>(props.file ? URL.createObjectURL(props.file) : 'https://fakeimg.pl/300x400');
 
     const onFileChange = (event: Event) => {
       const input = event.target as HTMLInputElement;
