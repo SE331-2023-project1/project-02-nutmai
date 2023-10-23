@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   # MySQL Database
@@ -15,6 +15,18 @@ services:
     networks:
       - my-network
 
+  # phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: my-phpmyadmin-container
+    environment:
+      PMA_HOST: mysql # Use the service name of the MySQL container
+      PMA_PORT: 3306 # MySQL port
+    ports:
+      - "8004:80"
+    networks:
+      - my-network
+
   # Spring Boot Application
   spring-app:
     build:
@@ -24,7 +36,7 @@ services:
     depends_on:
       - mysql
     ports:
-      - "8080:8080"
+      - "8005:8005"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/nutmai
       SPRING_DATASOURCE_USERNAME: nutmai
