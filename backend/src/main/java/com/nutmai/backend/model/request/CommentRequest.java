@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import io.micrometer.common.lang.Nullable;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentRequest {
-  @Nullable
+  @Id
   private String id;
   private String text;
   private String userId;

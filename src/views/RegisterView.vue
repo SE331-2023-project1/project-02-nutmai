@@ -17,7 +17,6 @@ let password: string | undefined = undefined;
 let confirmPassword: string | undefined = undefined;
 
 const $toast = useToast();
-const userStore = useUserStore();
 
 async function handleCreateAccount() {
   if (!file) {
@@ -43,7 +42,6 @@ async function handleCreateAccount() {
     });
     if (user.token) {
       localStorage.setItem("user", JSON.stringify(user));
-      userStore.setCurrentUser(user);
       $toast.success("Account created successfully", { position: "top-right" });
       return window.location.href = "/student-list?page=1"
     }

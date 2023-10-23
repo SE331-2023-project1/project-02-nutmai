@@ -42,13 +42,13 @@ onBeforeRouteUpdate((to, from, next) => {
   const toPage = Number(to.query.page);
   getStudentsService(perPage.value, toPage)
     //@ts-ignore
-    .then((res: { data: StudentModel[]; total: number }) => {
+    .then((res) => {
       students.value = res.data;
-      totalStudents.value = res.total;
+      totalStudents.value = res.totalElements;
       next();
     })
     .catch(() => {
-      next({ name: "Network error" });
+      next({ name: "network-error" });
     });
 });
 

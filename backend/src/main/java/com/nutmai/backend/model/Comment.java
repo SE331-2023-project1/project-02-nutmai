@@ -28,8 +28,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "comment")
 public class Comment {
   @Id
-  @GeneratedValue(generator = "UUID")
-  private UUID id;
+  private String id;
   private String text;
   @ManyToOne
   private User user;

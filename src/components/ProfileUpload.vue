@@ -18,7 +18,7 @@ export default {
     file:File,
   },
   setup(props, { emit }) {
-    const previewUrl = ref<string | null>(null);
+    const previewUrl = ref<string | null>(props.file ? URL.createObjectURL(props.file) : null);
 
     const onFileChange = (event: Event) => {
       const input = event.target as HTMLInputElement;
@@ -27,11 +27,6 @@ export default {
         previewUrl.value = URL.createObjectURL(input.files[0]);
       }
     };
-
-    onMounted(() => {
-      // Clear the preview when the component is mounted
-      previewUrl.value = null;
-    });
 
     return {
       previewUrl,

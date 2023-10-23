@@ -8,3 +8,7 @@ export async function registerStudentService(student: UserModel){
 export async function loginService(username: string, password: string){
   return await axiosClient.post("/auth/login", {username, password}).then(res => res.data);
 }
+
+export async function updateUserService(user: any){
+  return await axiosClient.put("/auth/update", user).then(res => res.data);
+}

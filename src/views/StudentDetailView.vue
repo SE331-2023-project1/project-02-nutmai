@@ -9,23 +9,19 @@ import { type UserModel } from "@/models/userModel";
 import { ref } from "vue";
 import Navbar from "@/components/Navbar.vue";
 
-const { commentStore, studentStore, teacherStore, userStore } = useStore();
+const { studentStore, userStore, teacherStore } = useStore();
 const student = storeToRefs(studentStore).getStudent;
 const teacher = storeToRefs(teacherStore).teacher;
-const comments = storeToRefs(commentStore).comments;
-
-console.log(student.value)
-
+const comments = student.value?.comments;
 const currentUser = storeToRefs(userStore).getCurrentUser;
-
 const showAdvisorModal = ref(false);
 const showCommentsModal = ref(false);
 </script>
 
 <template>
   <Navbar/>
-  <div class="w-[50%] flex flex-col">
-    <header class="w-full flex h-2/5 gap-4">
+  <div class="w-[60%] flex flex-col">
+    <header class="w-full flex h-3/5 gap-4">
       <div class="w-[25%] h-full overflow-hidden border border-black">
         <img :src="student?.img" class="w-full h-full object-cover" />
       </div>
@@ -97,7 +93,8 @@ const showCommentsModal = ref(false);
   </div>
 
   <ModalVue :show="showAdvisorModal" @close="showAdvisorModal = false">
-    <div class="flex space-x-4">
+    <h1 v-if="!teacher">No advisor assigned yet.</h1>
+    <div class="flex space-x-4" v-if="teacher">
       <div class="w-[40%]">
         <img :src="teacher?.img" class="w-full" />
       </div>
@@ -172,12 +169,12 @@ const showCommentsModal = ref(false);
             </div>
             <div class="flex gap-2">
               <h2 class="text-lg font-bold">Date:</h2>
-              <h2 class="text-lg">{{ comment.createdAt.toLocaleDateString() }}</h2>
+              <h2 class="text-lg">{{ new Date(comment.createdAt).toLocaleDateString() }} {{ new Date(comment.createdAt).toLocaleTimeString() }}</h2>
             </div>
           </div>
         </li>
       </ul>
-      <div v-if="comments.length === 0" class="text-lg">This student currently has no comments yet.</div>
+      <div v-if="comments?.length === 0" class="text-lg">This student currently has no comments yet.</div>
     </div>
   </ModalVue>
 </template>

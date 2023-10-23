@@ -24,8 +24,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "reply")
 public class Reply {
   @Id
-  @GeneratedValue(generator = "UUID")
-  private UUID id;
+  private String id;
   private String text;
   @ManyToOne
   @JoinColumn(name = "comment_id", referencedColumnName = "id")

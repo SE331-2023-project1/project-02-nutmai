@@ -3,16 +3,15 @@ import type { UserModel } from "@/models/userModel";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
-    currentUser: {} as UserModel,
   }),
   actions: {
-    setCurrentUser(user: UserModel) {
-      this.currentUser = user;
+    logout() {
+      localStorage.removeItem("user");
     },
   },
   getters: {
     getCurrentUser(state) {
-      return state.currentUser;
+      return JSON.parse(localStorage.getItem("user") || "{}") as UserModel;
     },
   },
 });

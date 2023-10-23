@@ -17,11 +17,13 @@ public class CommentService {
 
   public void createComment(CommentRequest request) {
     var user = userRepository.findById(request.getUserId()).orElse(null);
+    var createdBy = userRepository.findById(request.getCreatedById()).orElse(null);
     var comment = Comment.builder()
+      .id(request.getId())
       .text(request.getText())
       .user(user)
       .createdAt(request.getCreatedAt())
-      .createdBy(user)
+      .createdBy(createdBy)
       .build();
 
     commentRepository.save(comment);
@@ -35,7 +37,6 @@ public class CommentService {
     comment.setUser(user);
     comment.setCreatedAt(request.getCreatedAt());
     comment.setCreatedBy(user);
-
     commentRepository.save(comment);
   }
 

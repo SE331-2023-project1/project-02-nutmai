@@ -38,7 +38,7 @@ const router = createRouter({
         try{
           const student = await getStudentById(id)
           studentStore.setStudent(student);
-          const teacher = await getTeacherById(student.advisor?.id || "");
+          const teacher = await getTeacherById(student.advisor?.id || '');
           teacherStore.setTeacher(teacher);
         }catch(err:any){
           if (err.response && err.response.status === 404) {
@@ -59,6 +59,27 @@ const router = createRouter({
       props: (route) => ({
         page: parseInt((route.query?.page as string) || "1"),
       }),
+    },
+    {
+      path: '/user-profile',
+      name: 'user-profile',
+      component: () => import('@/views/UserProfileView.vue'),
+    },
+    {
+      path: "/admin",
+      name: "admin",
+      component: () => import("@/views/AdminView.vue"),
+      beforeEnter: async (to) => {
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        const isAuthenticated = user.token;
+        if(isAuthenticated){
+          if(user.role !== 'ADMIN'){
+            return {
+              name: 'student-list'
+            }
+          }
+        }
+      }
     },
     {
       path: '/404',
@@ -99,7 +120,6 @@ router.beforeEach(async (to, from) => {
       }
     }
   }
-  const isAdmin = user.role === 'admin';
 });
 
 router.afterEach(() => {

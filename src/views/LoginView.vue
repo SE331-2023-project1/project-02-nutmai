@@ -7,7 +7,6 @@ let username: string | undefined = undefined;
 let password: string | undefined = undefined;
 
 const $toast = useToast();
-const userStore = useUserStore();
 
 async function handleLogin(){
   const user = await loginService(
@@ -16,7 +15,6 @@ async function handleLogin(){
   );
   if (user.token) {
     localStorage.setItem("user", JSON.stringify(user));
-    userStore.setCurrentUser(user);
     $toast.success("Login successfully", { position: "top-right" });
     return window.location.href = "/student-list?page=1"
   }

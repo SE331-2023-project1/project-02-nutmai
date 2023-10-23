@@ -3,11 +3,14 @@ package com.nutmai.backend.controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nutmai.backend.model.request.RegisterRequest;
+import com.nutmai.backend.model.request.UpdateAdvisorRequest;
 import com.nutmai.backend.service.AuthenticationService;
 import com.nutmai.backend.service.UserService;
 
@@ -23,6 +26,7 @@ public class UserController {
   @GetMapping("/users/getUserById")
   public ResponseEntity<?> getUserById(@RequestParam String id) {
     try {
+      if(id == null || id.isEmpty()) return ResponseEntity.ok("");
       var user = userService.getUserById(id);
       return ResponseEntity.ok(user);
     } catch (Exception e) {
@@ -51,12 +55,22 @@ public class UserController {
   }
 
   @PostMapping("admin/users/create")
-  public ResponseEntity<?> createUser(@RequestParam RegisterRequest request) {
+  public ResponseEntity<?> createUser(@RequestBody RegisterRequest request) {
     try {
       authenticationService.register(request);
       return ResponseEntity.ok("User created successfully");
     } catch (Exception e) {
       return ResponseEntity.badRequest().body("User creation failed: " + e.getMessage());
+    }
+  }
+
+  @PutMapping("admin/users/updateAdvisor")
+  public ResponseEntity<?> updateAdvisor(@RequestBody UpdateAdvisorRequest request) {
+    try {
+      userService.updateAdvisor(request);
+      return ResponseEntity.ok("Advisor updated successfully");
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body("Advisor update failed: " + e.getMessage());
     }
   }
 }
