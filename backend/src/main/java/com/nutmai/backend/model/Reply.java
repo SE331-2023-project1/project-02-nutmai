@@ -27,7 +27,6 @@ public class Reply {
   private String id;
   private String text;
   @ManyToOne
-  @JoinColumn(name = "comment_id", referencedColumnName = "id")
   private Comment comment;
   @Temporal(TemporalType.TIMESTAMP)
   private Date createdAt;

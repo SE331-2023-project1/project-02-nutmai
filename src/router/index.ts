@@ -71,6 +71,17 @@ const router = createRouter({
       component: () => import('@/views/AdviseeListView.vue'),
     },
     {
+      path: '/announcement',
+      name: 'announcement',
+      component: () => import('@/views/AnnouncementView.vue'),
+    },
+    {
+      path: '/comment/:id',
+      name: 'comment=replies',
+      props: true,
+      component: () => import('@/views/CommentRepliesView.vue'),
+    },
+    {
       path: "/admin",
       name: "admin",
       component: () => import("@/views/AdminView.vue"),

@@ -18,15 +18,16 @@ const logout = () => {
     <nav class="flex fixed top-0 left-0 right-0 justify-center text-2xl py-2 bg-white">
       <RouterLink :to="{ name: 'student-list', query: { page: 1 } }" class="hover:bg-rose-100 px-3 py-1"
         >Student List</RouterLink
-      >|
+      >
       <RouterLink :to="{ name: 'teacher-list', query: { page: 1 } }" class="hover:bg-rose-200 px-3 py-1"
         >Teacher List</RouterLink
-      >|
-      <RouterLink :to="{ name: 'advisee-list', query: { page: 1 } }" class="hover:bg-rose-200 px-3 py-1" v-if="currentUser.role === 'TEACHER'"
-        >My Advisees |</RouterLink
       >
-      <RouterLink :to="{name: 'user-profile'}" class="hover:bg-rose-200 px-3 py-1">Profile</RouterLink>|
-      <RouterLink :to="{name: 'admin'}" class="hover:bg-rose-200 px-3 py-1">Admin</RouterLink>|
+      <RouterLink :to="{ name: 'advisee-list', query: { page: 1 } }" class="hover:bg-rose-200 px-3 py-1" v-if="currentUser.role === 'TEACHER'"
+        >My Advisees</RouterLink
+      >
+      <RouterLink :to="{name: 'announcement'}" class="hover:bg-rose-200 px-3 py-1">Announcement</RouterLink>
+      <RouterLink :to="{name: 'user-profile'}" class="hover:bg-rose-200 px-3 py-1">Profile</RouterLink>
+      <RouterLink :to="{name: 'admin'}" class="hover:bg-rose-200 px-3 py-1" v-if="currentUser.role === 'ADMIN'">Admin</RouterLink>
       <button class="hover:bg-rose-200 px-3 py-1" @click="logout">Logout</button>
     </nav>
   </header>

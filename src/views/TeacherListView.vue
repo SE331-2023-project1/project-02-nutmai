@@ -70,7 +70,7 @@ function handleView(id: string) {
 
 <template>
   <Navbar/>
-  <div class="flex flex-col h-full w-full sm:w-[60%]">
+  <div class="flex flex-col h-full w-full sm:w-[70%]">
     <div class="grid grid-cols-1 sm:grid-cols-3 grid-rows-none sm:grid-rows-2 gap-y-8 sm:gap-y-0 sm:gap-x-4">
       <PersonCard
         v-for="teacher in teachers"

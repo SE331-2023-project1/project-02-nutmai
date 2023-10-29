@@ -49,8 +49,7 @@ async function handleUpdateAccount() {
     advisorId: advisor.value,
   });
   if (res.status === 200) {
-    $toast.success("Updated Advisor successfully", {position: "top-right"});
-    return window.location.reload();
+    return $toast.success("Updated Advisor successfully", {position: "top-right"});
   }
   $toast.error("Failed to update Advisor", {position: "top-right"});
 }
@@ -81,6 +80,8 @@ async function handleCreateAccount() {
       department: department as string,
       username: username as string,
       password: password as string,
+      academicPosition: academicPosition as string,
+      title: academicPosition as string,
       role: "TEACHER",
     });
     if (res.status === 200) {

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nutmai.backend.model.request.CommentRequest;
 import com.nutmai.backend.model.request.CourseRequest;
+import com.nutmai.backend.model.request.ReplyRequest;
 import com.nutmai.backend.service.CommentService;
 import com.nutmai.backend.service.CourseService;
 
@@ -57,12 +58,32 @@ public class CommentController {
   }
 
   @GetMapping("/comments/get")
-  public ResponseEntity<?> getCourse(@RequestParam String id) {
+  public ResponseEntity<?> getComment(@RequestParam String id) {
     try {
       var comment = commentService.getComment(id);
       return ResponseEntity.ok(comment);
     } catch (Exception e) {
       return ResponseEntity.badRequest().body("Comment retrieval failed: " + e.getMessage());
+    }
+  }
+
+  @PostMapping("/student/replies/create")
+  public ResponseEntity<?> createReply(@RequestBody ReplyRequest request) {
+    try {
+      commentService.createReply(request);
+      return ResponseEntity.ok("Reply created successfully");
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body("Reply creation failed: " + e.getMessage());
+    }
+  }
+
+  @GetMapping("/replies/get")
+  public ResponseEntity<?> getReply(@RequestParam String id) {
+    try {
+      var reply = commentService.getReply(id);
+      return ResponseEntity.ok(reply);
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body("Reply retrieval failed: " + e.getMessage());
     }
   }
 

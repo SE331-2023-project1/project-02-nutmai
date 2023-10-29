@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nutmai.backend.model.request.FileRequest;
 import com.nutmai.backend.model.request.RegisterRequest;
 import com.nutmai.backend.model.request.UpdateAdvisorRequest;
 import com.nutmai.backend.service.AuthenticationService;
@@ -71,6 +72,26 @@ public class UserController {
       return ResponseEntity.ok("Advisor updated successfully");
     } catch (Exception e) {
       return ResponseEntity.badRequest().body("Advisor update failed: " + e.getMessage());
+    }
+  }
+
+  @PostMapping("teacher/files/uploadFile")
+  public ResponseEntity<?> uploadFile(@RequestBody FileRequest request) {
+    try {
+      userService.uploadFile(request);
+      return ResponseEntity.ok("File uploaded successfully");
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body("File upload failed: " + e.getMessage());
+    }
+  }
+
+  @GetMapping("files/getAllFiles")
+  public ResponseEntity<?> getAllFiles() {
+    try {
+      var files = userService.getAllFiles();
+      return ResponseEntity.ok(files);
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body("Files not found: " + e.getMessage());
     }
   }
 }

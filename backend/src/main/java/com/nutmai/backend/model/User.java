@@ -23,6 +23,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -39,7 +40,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "user")
-@JsonIgnoreProperties({"advisees", "studyCourses", "teachCourses", "comments", "createdComments", "createdReplies"})
+@JsonIgnoreProperties({"advisees", "studyCourses", "teachCourses", "comments", "createdComments", "createdReplies", "createdFiles"})
 public class User implements UserDetails {
   @Id
   private String id;
@@ -60,7 +61,7 @@ public class User implements UserDetails {
   @Nullable
   private String academicPosition;
   @Nullable
-  @OneToOne(cascade = CascadeType.ALL)
+  @ManyToOne
   @JoinColumn(name = "advisor_id", referencedColumnName = "id")
   private User advisor;
   @Nullable
@@ -81,6 +82,9 @@ public class User implements UserDetails {
   @Nullable
   @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private List<Reply> createdReplies;
+  @Nullable
+  @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  private List<File> createdFiles;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
